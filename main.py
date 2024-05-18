@@ -4,6 +4,10 @@
 # Copyright: GNU Public License http://www.gnu.org/licenses/
 # 20220372@student.act.edu
 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
 def menu_option_check(value, min_option, max_option):
     if ascii(value) < ascii(min_option) or ascii(value) > ascii(max_option):
         print(f"Invalid input! Please make sure your option choice is between {min_option} and {max_option}.")
@@ -20,29 +24,6 @@ def display_menu_instructions():
 5. Calculate and graph total lap time per driver
 6. Exit the program
         """)
-
-
-def switch_choice(option):
-    match option:
-        case 1:
-            read_data()
-        case 2:
-            lap_search()
-        case 3:
-            avg_lap_time()
-        case 4:
-            field_sort()
-        case 5:
-            column_graph()
-        case 6:
-            print("""
-                You selected option 6.
-                It's time to say goodbye then...
-                Bye!
-            """)
-            quit(0)
-        case default:
-            print("Error occurred")
 
 
 def read_data():
@@ -70,8 +51,27 @@ def main():
     print("F1 GRAND PRIX RACING DATA & STATISTICS FOR THE 2023 RACING SEASON")
     print("=================================================================")
 
-    option = 0
-    display_menu_instructions()
+    while True:
+        display_menu_instructions()
+        option = input("Enter your choice: ")
+
+        match option:
+            case '1':
+                read_data()
+            case '2':
+                lap_search()
+            case '3':
+                avg_lap_time()
+            case '4':
+                field_sort()
+            case '5':
+                column_graph()
+            case '6':
+                print("You selected option 6.\nIt's time to say goodbye then...\nBye!")
+                break
+            case default:
+                print("Invalid choice. Please try again!")
+                input("Press Enter to continue...")
 
 
 if __name__ == "__main__":
