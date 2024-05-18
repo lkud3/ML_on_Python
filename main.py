@@ -28,6 +28,12 @@ def display_menu_instructions():
 
 def read_data():
     print("-----------------------------------------------------------------")
+    global data
+    data = pd.read_csv('partA_input_data.csv', sep='\t')
+    print(data)
+    input("Press Enter to continue...")
+#     TODO: Add more appealing data printing
+
 
 
 def lap_search():
@@ -52,6 +58,7 @@ def main():
     print("=================================================================")
 
     while True:
+        print("-----------------------------------------------------------------")
         display_menu_instructions()
         option = input("Enter your choice: ")
 
