@@ -4,8 +4,14 @@
 # Copyright: GNU Public License http://www.gnu.org/licenses/
 # 20220372@student.act.edu
 
+from tabulate import tabulate
+from IPython.display import display
 import pandas as pd
 import matplotlib.pyplot as plt
+import common.print_instructions as pi
+
+# Initializing the global data frame for data storage
+data = pd.DataFrame()
 
 
 def menu_option_check(value, min_option, max_option):
@@ -15,41 +21,43 @@ def menu_option_check(value, min_option, max_option):
     return True  # Thing to discuss
 
 
-def display_menu_instructions():
-    print("""
-1. Read and display the F1 Grand Prix data for the 2023 racing season
-2. Filter and sort race data based on a minimum threshold of laps
-3. Calculate average lap time per race, save, retrieve, display
-4. Sort and display the data based on user parameters
-5. Calculate and graph total lap time per driver
-6. Exit the program
-        """)
+def display_data():
+    print("-----------------------------------------------------------------")
+    input("Press Enter to continue...")
 
 
 def read_data():
     print("-----------------------------------------------------------------")
     global data
-    data = pd.read_csv('partA_input_data.csv', sep='\t')
-    print(data)
+    data = pd.read_csv('res/partA_input_data.csv', sep='\t')
+    # display(data)
+    print(tabulate(data, headers='keys'))
+    print(data.head())
     input("Press Enter to continue...")
 #     TODO: Add more appealing data printing
 
 
-
 def lap_search():
+    # global data
     print("-----------------------------------------------------------------")
+    limit = int(input("Enter the limit of laps to search by: "))
+    print(data[data.LAPS >= limit].sort_values('GRAND PRIX'))
+    input("Press Enter to continue...")
 
 
 def avg_lap_time():
     print("-----------------------------------------------------------------")
+    input("Press Enter to continue...")
 
 
 def field_sort():
     print("-----------------------------------------------------------------")
+    input("Press Enter to continue...")
 
 
 def column_graph():
     print("-----------------------------------------------------------------")
+    input("Press Enter to continue...")
 
 
 def main():
@@ -59,10 +67,13 @@ def main():
 
     while True:
         print("-----------------------------------------------------------------")
-        display_menu_instructions()
+        pi.display_menu_instructions()
         option = input("Enter your choice: ")
 
         match option:
+            case '0':
+                pi.print_legend()
+                input("Press Enter to continue...")
             case '1':
                 read_data()
             case '2':
@@ -74,6 +85,7 @@ def main():
             case '5':
                 column_graph()
             case '6':
+                print("-----------------------------------------------------------------")
                 print("You selected option 6.\nIt's time to say goodbye then...\nBye!")
                 break
             case default:
