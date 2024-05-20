@@ -5,7 +5,6 @@
 # 20220372@student.act.edu
 
 from tabulate import tabulate
-from IPython.display import display
 import pandas as pd
 import matplotlib.pyplot as plt
 import common.print_instructions as pi
@@ -21,32 +20,33 @@ def menu_option_check(value, min_option, max_option):
     return True  # Thing to discuss
 
 
-def display_data():
-    print("-----------------------------------------------------------------")
-    input("Press Enter to continue...")
+def display_data(data_input) -> None:
+    print(tabulate(data_input, headers='keys'))
 
 
 def read_data():
-    print("-----------------------------------------------------------------")
+    print("--------------------------------------------------------------------------")
     global data
-    data = pd.read_csv('res/partA_input_data.csv', sep='\t')
-    # display(data)
-    print(tabulate(data, headers='keys'))
-    print(data.head())
+    data = pd.read_csv('res/partA_input_data.csv')
+    display_data(data)
     input("Press Enter to continue...")
-#     TODO: Add more appealing data printing
 
 
 def lap_search():
-    # global data
-    print("-----------------------------------------------------------------")
+    print("--------------------------------------------------------------------------")
     limit = int(input("Enter the limit of laps to search by: "))
-    print(data[data.LAPS >= limit].sort_values('GRAND PRIX'))
+    # TODO("Error input catching")
+    display_data(data[data['LAPS'] >= limit].sort_values('GRAND PRIX'))
     input("Press Enter to continue...")
 
 
 def avg_lap_time():
+    global data
     print("-----------------------------------------------------------------")
+    # TODO("Parse the time into INT")
+    data['AVERAGE LAP TIME'] = data['TIME'] / data['LAPS']
+    data.to_csv('res/partA_output_data.txt', sep='\t', index=False)
+    display_data(pd.read_csv('res/partA_output_data.txt', sep='\t'))
     input("Press Enter to continue...")
 
 
@@ -70,6 +70,7 @@ def main():
         pi.display_menu_instructions()
         option = input("Enter your choice: ")
 
+        # TODO("Restrictions for menu option until 1 is implemented")
         match option:
             case '0':
                 pi.print_legend()
