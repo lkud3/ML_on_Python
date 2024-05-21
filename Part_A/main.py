@@ -59,15 +59,15 @@ def read_data():
 
 def lap_search():
     print("--------------------------------------------------------------------------")
-    # TODO(Redo the try catch shit)
-    # while True:
-    #     limit = input("Enter the limit of laps to search by: ")
-    #
-    #     if isinstance(limit, int):
-    #         if limit > 0:
-    #             break
-    #
-    #     print("Invalid input. Please try again!")
+    # TODO(Min and Max values)
+
+    while True:
+        try:
+            limit = int(input("Enter the limit of laps to search by: "))
+        except ValueError:
+            print("Invalid input. Please try again!")
+        else:
+            break
 
     display_data(data[data['LAPS'] >= limit].sort_values('GRAND PRIX'))
     input("Press Enter to continue...")
