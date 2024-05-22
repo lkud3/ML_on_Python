@@ -94,23 +94,23 @@ def avg_lap_time():
 def field_sort():
     print("--------------------------------------------------------------------------------------------------")
 
-    # TODO(may be rework the choice, to make it just numbers)
+    # TODO(may be implement error trapping with try except)
     pi.print_columns_choice()
     while True:
-        field = input("Enter the field to sort by (name of the column): ")
-        if field.upper() in column_names:
+        field = input("Enter the field to sort by (number): ")
+        if field in ['1', '2', '3', '4', '5', '6', '7']:
             break
         print("\nThere is no such a column in data. Check the spelling!")
 
     pi.print_order_choice()
     while True:
-        order = input("Enter the order (asc or desc): ")
-        if order.lower() in ['asc', 'desc']:
+        order = input("Enter the order (number): ")
+        if order in ['1', '2']:
             break
         print("\nYou entered invalid order. Please revaluate your choice!")
 
     # TODO(Sorting of date)
-    display_data(data.sort_values(field.upper(), ascending=order.lower() == 'asc'))
+    display_data(data.sort_values(column_names[int(field)-1], ascending=order == '1'))
     input("Press Enter to continue...")
 
 
