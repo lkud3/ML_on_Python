@@ -57,7 +57,7 @@ def read_data():
     global data
     data = pd.read_csv('res/partA_input_data.csv')
     display_data(data)
-    " " + input("Press Enter to continue...")
+    input("Press Enter to continue...")
 
 
 def lap_search():
@@ -75,7 +75,7 @@ def lap_search():
                 print("\nThe limit you entered is out of range. Please revaluate your choice!")
 
     display_data(data[data['LAPS'] >= limit].sort_values('GRAND PRIX'))
-    " " + input("Press Enter to continue...")
+    input("Press Enter to continue...")
 
 
 def avg_lap_time():
@@ -88,7 +88,7 @@ def avg_lap_time():
     # Writing the new data frame into new file and displaying the results by reading from this new file
     data.to_csv('res/partA_output_data.txt', sep=',', index=False)
     display_data(pd.read_csv('res/partA_output_data.txt'))
-    " " + input("Press Enter to continue...")
+    input("Press Enter to continue...")
 
 
 def field_sort():
@@ -111,12 +111,12 @@ def field_sort():
 
     # TODO(Sorting of date)
     display_data(data.sort_values(field.upper(), ascending=order.lower() == 'asc'))
-    " " + input("Press Enter to continue...")
+    input("Press Enter to continue...")
 
 
 def column_graph():
     print("--------------------------------------------------------------------------------------------------")
-    " " + input("Press Enter to continue...")
+    input("Press Enter to continue...")
 
 
 def main():
@@ -137,7 +137,7 @@ def main():
         match option:
             case '0':
                 pi.print_legend()
-                " " + input("Press Enter to continue...")
+                input("Press Enter to continue...")
             case '1':
                 read_data()
             case '2':
@@ -147,7 +147,7 @@ def main():
             case '4':
                 if 'AVERAGE LAP TIME' not in data.columns:
                     print("\nNot enough data. Please execute option 3 first.")
-                    " " + input("Press Enter to continue...")
+                    input("Press Enter to continue...")
                     continue
                 field_sort()
             case '5':
@@ -159,7 +159,7 @@ def main():
                 quit(0)
             case default:
                 print("Invalid choice. Please try again!")
-                " " + input("Press Enter to continue...")
+                input("Press Enter to continue...")
 
 
 if __name__ == "__main__":
