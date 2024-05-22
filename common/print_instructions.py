@@ -23,3 +23,24 @@ sorted according to the user's instructions (ascending or descending).
 presents it as a GUI column graph in a pop-up window.
 6. Exit the program
         """)
+
+
+def print_columns_choice():
+    print("""
+The columns options:
+1. GRAND PRIX
+2. DATE
+3. WINNER
+4. CAR
+5. LAPS
+6. TIME
+7. AVERAGE LAP TIME
+            """)
+
+
+def print_order_choice():
+    print("""
+The order options:
+1. Ascending
+2. Descending
+            """)
