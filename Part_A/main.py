@@ -11,6 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import common.print_instructions as pi
 
+# TODO(decide about global variable)
 # Initializing the global data frame for data storage
 data = pd.DataFrame()
 
@@ -53,6 +54,7 @@ def double_to_time(time_double):
     return f"{minutes:02}:{seconds:02}.{deciseconds}"
 
 
+# TODO(may be add replace function to every user input waiting)
 def read_data():
     print("--------------------------------------------------------------------------------------------------")
     global data
@@ -64,6 +66,7 @@ def read_data():
 def lap_search():
     print("--------------------------------------------------------------------------------------------------")
 
+    # TODO(Update the limit check)
     while True:
         try:
             limit = int(input("Enter the limit of laps to search by (0-78): "))

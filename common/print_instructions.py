@@ -25,6 +25,7 @@ presents it as a GUI column graph in a pop-up window.
         """)
 
 
+# TODO(make it dynamic)
 def print_columns_choice():
     print("""
 The columns options:
