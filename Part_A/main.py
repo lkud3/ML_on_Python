@@ -13,14 +13,15 @@ import common.print_instructions as pi
 
 # Initializing the global data frame for data storage
 data = pd.DataFrame()
-column_names = ['GRAND PRIX', 'DATE', 'WINNER', 'CAR', 'LAPS', 'TIME', 'AVERAGE LAP TIME']
 
 
-def menu_option_check(value, min_option, max_option):
-    if ascii(value) < ascii(min_option) or ascii(value) > ascii(max_option):
-        print(f"Invalid input! Please make sure your option choice is between {min_option} and {max_option}.")
-        return False
-    return True  # Thing to discuss
+def input_error_checker(message, min_option, max_option):
+    while True:
+        value = input(message).replace(" ", "")
+        if min_option <= value <= max_option:
+            return int(value)
+        else:
+            print(f"\nInvalid input! Please make sure your option choice is between {min_option} and {max_option}.")
 
 
 def display_data(data_input) -> None:
@@ -57,7 +58,7 @@ def read_data():
     global data
     data = pd.read_csv('res/partA_input_data.csv')
     display_data(data)
-    input("Press Enter to continue...")
+    input("Press Enter to continue...").replace("", " ")
 
 
 def lap_search():
@@ -93,24 +94,14 @@ def avg_lap_time():
 
 def field_sort():
     print("--------------------------------------------------------------------------------------------------")
-
-    # TODO(may be implement error trapping with try except)
     pi.print_columns_choice()
-    while True:
-        field = input("Enter the field to sort by (number): ")
-        if field in ['1', '2', '3', '4', '5', '6', '7']:
-            break
-        print("\nThere is no such a column in data. Check the spelling!")
+    field = input_error_checker("Enter the field to sort by (number): ", '1', str(len(data.columns)))
 
     pi.print_order_choice()
-    while True:
-        order = input("Enter the order (number): ")
-        if order in ['1', '2']:
-            break
-        print("\nYou entered invalid order. Please revaluate your choice!")
+    order = input_error_checker("Enter the order (number): ", '1', '2')
 
     # TODO(Sorting of date)
-    display_data(data.sort_values(column_names[int(field)-1], ascending=order == '1'))
+    display_data(data.sort_values(data.iloc[:, field-1].name, ascending=order == 1))
     input("Press Enter to continue...")
 
 
@@ -127,39 +118,38 @@ def main():
     while True:
         print("--------------------------------------------------------------------------------------------------")
         pi.display_menu_instructions()
-        option = input("Enter your choice: ")
+        option = input("Enter your choice: ").replace(" ", "")
 
-        # TODO("Restrictions for menu option until 1 is implemented")
-        # if not choice == "1" and not choice == "6" and table is None:
-        #     print("Please use choice \"1\" to load the table first.")
-        #     return
-
-        match option:
-            case '0':
-                pi.print_legend()
-                input("Press Enter to continue...")
-            case '1':
-                read_data()
-            case '2':
-                lap_search()
-            case '3':
-                avg_lap_time()
-            case '4':
-                if 'AVERAGE LAP TIME' not in data.columns:
-                    print("\nNot enough data. Please execute option 3 first.")
+        if option != '1' and option != '6' and data.empty:
+            print("Not enough data to proceed! Please run \"1\" option to load the data first.")
+            input("Press Enter to continue...")
+        else:
+            match option:
+                case '0':
+                    pi.print_legend()
                     input("Press Enter to continue...")
-                    continue
-                field_sort()
-            case '5':
-                column_graph()
-            case '6':
-                print("----------------------------------------------------------------------------------------------"
-                      "----")
-                print("You selected option 6.\nIt's time to say goodbye then...\nBye!")
-                quit(0)
-            case default:
-                print("Invalid choice. Please try again!")
-                input("Press Enter to continue...")
+                case '1':
+                    read_data()
+                case '2':
+                    lap_search()
+                case '3':
+                    avg_lap_time()
+                case '4':
+                    if 'AVERAGE LAP TIME' not in data.columns:
+                        print("\nNot enough data. Please execute option 3 first.")
+                        input("Press Enter to continue...")
+                        continue
+                    field_sort()
+                case '5':
+                    column_graph()
+                case '6':
+                    print("-------------------------------------------------------------------------------------------"
+                          "-------")
+                    print("You selected option 6.\nIt's time to say goodbye then...\nBye!")
+                    quit(0)
+                case default:
+                    print("Invalid choice. Please try again!")
+                    input("Press Enter to continue...")
 
 
 if __name__ == "__main__":
