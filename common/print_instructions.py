@@ -25,18 +25,12 @@ presents it as a GUI column graph in a pop-up window.
         """)
 
 
-# TODO(make it dynamic)
-def print_columns_choice():
-    print("""
-The columns options:
-1. GRAND PRIX
-2. DATE
-3. WINNER
-4. CAR
-5. LAPS
-6. TIME
-7. AVERAGE LAP TIME
-            """)
+def print_columns_choice(columns):
+    print("\nThe columns options:\n")
+
+    for index, name in enumerate(columns, start=1):
+        print(f"{index}. {name}")
+    print()
 
 
 def print_order_choice():

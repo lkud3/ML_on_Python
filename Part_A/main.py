@@ -26,7 +26,10 @@ def input_error_checker(message, min_option, max_option):
 
 
 def display_data(data_input) -> None:
-    print(tabulate(data_input, headers='keys'))
+    if data_input.empty:
+        print("\nThere is no data matching your request.")
+    else:
+        print(tabulate(data_input, headers='keys'))
 
 
 # Convert time in format mm:ss.ms to a double.
@@ -54,29 +57,24 @@ def double_to_time(time_double):
     return f"{minutes:02}:{seconds:02}.{deciseconds}"
 
 
-# TODO(may be add replace function to every user input waiting)
 def read_data():
     print("--------------------------------------------------------------------------------------------------")
     global data
     data = pd.read_csv('res/partA_input_data.csv')
     display_data(data)
-    input("Press Enter to continue...").replace("", " ")
+    input("Press Enter to continue...")
 
 
 def lap_search():
     print("--------------------------------------------------------------------------------------------------")
-
-    # TODO(Update the limit check)
     while True:
         try:
-            limit = int(input("Enter the limit of laps to search by (0-78): "))
-        except ValueError:
+            limit = int(input(f"Enter the limit of laps to search by (0 - {data['LAPS'].max()}): "))
+            if limit < 0:
+                raise Exception
+            break
+        except (ValueError, Exception):
             print("\nInvalid input. Please try again!")
-        else:
-            if 0 <= limit <= 78:
-                break
-            else:
-                print("\nThe limit you entered is out of range. Please revaluate your choice!")
 
     display_data(data[data['LAPS'] >= limit].sort_values('GRAND PRIX'))
     input("Press Enter to continue...")
@@ -97,7 +95,7 @@ def avg_lap_time():
 
 def field_sort():
     print("--------------------------------------------------------------------------------------------------")
-    pi.print_columns_choice()
+    pi.print_columns_choice(data.columns)
     field = input_error_checker("Enter the field to sort by (number): ", '1', str(len(data.columns)))
 
     pi.print_order_choice()
@@ -108,6 +106,7 @@ def field_sort():
     input("Press Enter to continue...")
 
 
+# TODO(Last option)
 def column_graph():
     print("--------------------------------------------------------------------------------------------------")
     input("Press Enter to continue...")
@@ -124,7 +123,7 @@ def main():
         option = input("Enter your choice: ").replace(" ", "")
 
         if option != '1' and option != '6' and data.empty:
-            print("Not enough data to proceed! Please run \"1\" option to load the data first.")
+            print("\nNot enough data to proceed! Please run \"1\" option to load the data first.")
             input("Press Enter to continue...")
         else:
             match option:
@@ -139,7 +138,7 @@ def main():
                     avg_lap_time()
                 case '4':
                     if 'AVERAGE LAP TIME' not in data.columns:
-                        print("\nNot enough data. Please execute option 3 first.")
+                        print("\nNot enough data to proceed. Please execute option 3 first.")
                         input("Press Enter to continue...")
                         continue
                     field_sort()
