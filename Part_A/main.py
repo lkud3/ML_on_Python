@@ -60,8 +60,10 @@ def double_to_time(time_double):
 def read_data():
     print("--------------------------------------------------------------------------------------------------")
     global data
-    data = pd.read_csv('res/partA_input_data.csv')
+    data = pd.read_csv('res/partA_input_data.csv').convert_dtypes()
+    data['DATE'] = pd.to_datetime(data['DATE'], format='%d-%b-%y')
     display_data(data)
+    print(data.dtypes)
     input("Press Enter to continue...")
 
 
@@ -101,14 +103,20 @@ def field_sort():
     pi.print_order_choice()
     order = input_error_checker("Enter the order (number): ", '1', '2')
 
-    # TODO(Sorting of date)
+    # TODO(Sorting of date, may be by changing the sorting or by storing the date)
     display_data(data.sort_values(data.iloc[:, field-1].name, ascending=order == 1))
     input("Press Enter to continue...")
 
 
-# TODO(Last option)
 def column_graph():
     print("--------------------------------------------------------------------------------------------------")
+    # TODO(convert last column into integer)
+    total_average_lap_time = data.groupby('WINNER')['AVERAGE LAP TIME'].mean()
+    plt.bar(total_average_lap_time.index, total_average_lap_time.values)
+    plt.xlabel('Driver Name')
+    plt.ylabel('Average Lap Time (minutes)')
+    plt.title('Total Average Lap Time per Driver')
+    plt.show()
     input("Press Enter to continue...")
 
 
