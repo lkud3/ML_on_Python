@@ -6,12 +6,12 @@
 # Copyright: GNU Public License http://www.gnu.org/licenses/
 # 20220372@student.act.edu
 
+from random import *
 from tabulate import tabulate
 import pandas as pd
 import matplotlib.pyplot as plt
 import common.print_instructions as pi
 
-# TODO(decide about global variable)
 # Initializing the global data frame for data storage
 data = pd.DataFrame()
 
@@ -110,13 +110,16 @@ def field_sort():
 
 def column_graph():
     print("--------------------------------------------------------------------------------------------------")
-    # TODO(convert last column into integer)
-    total_average_lap_time = data.groupby('WINNER')['AVERAGE LAP TIME'].mean()
+    total_average_lap_time = data
+    total_average_lap_time['AVERAGE LAP TIME'] = total_average_lap_time['AVERAGE LAP TIME'].apply(time_to_double) / 100
+    total_average_lap_time = total_average_lap_time.groupby('WINNER')['AVERAGE LAP TIME'].mean()
+
     plt.bar(total_average_lap_time.index, total_average_lap_time.values)
     plt.xlabel('Driver Name')
     plt.ylabel('Average Lap Time (minutes)')
     plt.title('Total Average Lap Time per Driver')
     plt.show()
+
     input("Press Enter to continue...")
 
 
