@@ -11,6 +11,7 @@ from tabulate import tabulate
 import pandas as pd
 import matplotlib.pyplot as plt
 import common.print_instructions as pi
+import re
 
 # Initializing the global data frame for data storage
 data = pd.DataFrame()
@@ -60,10 +61,8 @@ def double_to_time(time_double):
 def read_data():
     print("--------------------------------------------------------------------------------------------------")
     global data
-    data = pd.read_csv('res/partA_input_data.csv').convert_dtypes()
-    data['DATE'] = pd.to_datetime(data['DATE'], format='%d-%b-%y')
+    data = pd.read_csv('res/partA_input_data.csv')
     display_data(data)
-    print(data.dtypes)
     input("Press Enter to continue...")
 
 
@@ -103,8 +102,12 @@ def field_sort():
     pi.print_order_choice()
     order = input_error_checker("Enter the order (number): ", '1', '2')
 
-    # TODO(Sorting of date, may be by changing the sorting or by storing the date)
-    display_data(data.sort_values(data.iloc[:, field-1].name, ascending=order == 1))
+    pattern = r'^\d{2}-[A-Z][a-z]{2}-\d{2}$'
+    if re.match(pattern, str(data.iloc[:, field-1].iloc[0])):
+        display_data(data.sort_values(data.iloc[:, field - 1].name, ascending=order == 1,
+                                      key=lambda x: pd.to_datetime(x, format='%d-%b-%y')))
+    else:
+        display_data(data.sort_values(data.iloc[:, field-1].name, ascending=order == 1))
     input("Press Enter to continue...")
 
 
