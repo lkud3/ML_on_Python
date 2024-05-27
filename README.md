@@ -1,0 +1,1 @@
+# The repository of my final project on CS340 at American College at Thessaloniki (introduction to AI and ML using Python). The showcase of coding on Python and working with files as well as teaching the AI model.
