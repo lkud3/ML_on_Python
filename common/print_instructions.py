@@ -6,11 +6,12 @@ def display_menu_instructions():
 4. Sort and display the data based on user parameters
 5. Calculate and graph total lap time per driver
 6. Exit the program
-Hint: Enter (0) for more detailed description of each menu option.
+Hint: Enter \"0\" for more detailed description of each menu option.
         """)
 
 
 def print_legend():
+    print("--------------------------------------------------------------------------------------------------")
     print("""
 1. Reads the 6 columns of data from file partA_input_data.txt and neatly displays it on screen.
 2. Asking user for a limit of laps to search by, then displays only the race results
