@@ -1,3 +1,4 @@
+# Function to display the menu options for PartA
 def display_menu_instructions():
     print("""
 1. Read and display the F1 Grand Prix data for the 2023 racing season
@@ -10,6 +11,7 @@ Hint: Enter \"0\" for more detailed description of each menu option.
         """)
 
 
+# Function to display the legend for PartA
 def print_legend():
     print("--------------------------------------------------------------------------------------------------")
     print("""
@@ -26,6 +28,7 @@ presents it as a GUI column graph in a pop-up window.
         """)
 
 
+# Function to display the columns list to choose from for the sorting function
 def print_columns_choice(columns):
     print("\nThe columns options:\n")
 
@@ -34,6 +37,7 @@ def print_columns_choice(columns):
     print()
 
 
+# Function to print the sort order choices
 def print_order_choice():
     print("""
 The order options:
