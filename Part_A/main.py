@@ -161,7 +161,7 @@ def column_graph():
     print("--------------------------------------------------------------------------------------------------")
     # Creates new dataframe to calculate the total average lap time and group the data by the driver
     total_average_lap_time = data
-    total_average_lap_time['AVERAGE LAP TIME'] = total_average_lap_time['AVERAGE LAP TIME'].apply(time_to_double) / 100
+    total_average_lap_time['AVERAGE LAP TIME'] = total_average_lap_time['AVERAGE LAP TIME'].apply(time_to_double)
     total_average_lap_time = total_average_lap_time.groupby('WINNER')['AVERAGE LAP TIME'].mean()
 
     print("The graph is build in pop-up window. Please close the window to continue...")
@@ -169,7 +169,7 @@ def column_graph():
     # Builds the plot based on the drivers and their total ALT
     plt.bar(total_average_lap_time.index, total_average_lap_time.values)
     plt.xlabel('Driver Name')
-    plt.ylabel('Average Lap Time (minutes)')
+    plt.ylabel('Average Lap Time (seconds)')
     plt.title('Total Average Lap Time per Driver')
     plt.show()
 
@@ -212,6 +212,11 @@ def main():
                         continue
                     field_sort()
                 case '5':
+                    # Checks if the option 3 was used before option 4
+                    if 'AVERAGE LAP TIME' not in data.columns:
+                        print("\nNot enough data to proceed. Please execute option 3 first.")
+                        input("Press Enter to continue...")
+                        continue
                     column_graph()
                 case '6':
                     print("-------------------------------------------------------------------------------------------"
