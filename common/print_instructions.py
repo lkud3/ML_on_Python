@@ -44,3 +44,35 @@ The order options:
 1. Ascending
 2. Descending
             """)
+
+
+# Function to display the menu options for PartB
+# TODO(adjust the options)
+def mlp_menu_instructions():
+    print("""
+1. Read the labelled text data file, display the first 5 lines
+2. Choose the size of the hidden layers of the MLP topology (e.g. 4-?-?-1)
+3. Choose the size of the training step (0.001 - 0.5, [ENTER] for adaptable)
+4. Train on 80% of labeled data, display progress graph
+5. Classify the unlabeled data, output training report and confusion matrix
+6. Make 18 tests to analyze the best approach
+7. Exit the program
+Hint: Enter \"0\" for more detailed description of each menu option.
+        """)
+
+
+# Function to display the legend for PartB
+def mlp_legend():
+    print("--------------------------------------------------------------------------------------------------")
+    print("""
+1. Reads the data from file and, parsing it and preparing for future actions. Prints the first 5 lines of the dataframe.
+2. Asking user for a hidden layers topology of the MLP. In case of empty input, make the default reasonable topology.
+3. Asking user for a training step the MLP to adapt with. In case of empty input, make the training step adaptable. 
+4. Splits the data on 80/20 to train on 80% of the data and use the rest of 20% to test the predictions. 
+Shows the progress graph.
+5. Uses the 20% of data to make prediction for classification. Shoes the results, including training report and 
+confusion matrix.
+6. Make a tests of the MLP with 3 different topologies, 3 different learning steps and 2 different training approaches
+to evaluate the best combination out of 18 of them. Saves all the error graphs created into a zip file.
+7. Exit the program
+        """)
