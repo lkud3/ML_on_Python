@@ -18,6 +18,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
+
 # TODO(save all the new data into files)
 
 
@@ -35,16 +36,21 @@ def read_data(file, names):
     return data_variables, data_labels
 
 
-# TODO(add default topology)
 def topology_choice():
     print("--------------------------------------------------------------------------------------------------")
     while True:
-        try:
-            # Receives user input and catches non-integer input
-            input_string = input("Enter the size of the hidden layers of the MLP topology (e.g. 10-10-10).\nHINT: "
-                                 "input and output layers are fixed, choose the size of hidden"
-                                 " layers only: ").replace(" ", "")
+        input_string = input("Enter the size of the hidden layers of the MLP topology (e.g. 10-10-10), [ENTER] "
+                             "for default) \nHINT: "
+                             "input and output layers are fixed, choose the size of hidden"
+                             " layers only: ").replace(" ", "")
 
+        if input_string == "":
+            print(f"\nThe topology for hidden layers will be 3-3.")
+            input("Press Enter to continue...")
+            topology = (3, 3)
+            return topology
+
+        try:
             topology = tuple(int(x) for x in input_string.split("-") if x != "")
 
             if len(topology) < 2:
@@ -86,8 +92,8 @@ def training_step_choice():
             print("\nInvalid input! Please enter a valid double value. Please try again!")
 
 
+# TODO(fix the warning)
 def plot_training_error(mlp, entry_train, labels_train, epochs):
-    print("The error graph is building...")
     errors = []
     for i in range(epochs):
         mlp.partial_fit(entry_train, labels_train.values.ravel())
@@ -103,38 +109,38 @@ def plot_training_error(mlp, entry_train, labels_train, epochs):
 def train_mlp(entry_train, labels_train, topology, step):
     print("--------------------------------------------------------------------------------------------------")
     if isinstance(step, str):
-        mlp = MLPClassifier(hidden_layer_sizes=topology, max_iter=1000, learning_rate='adaptive')
+        mlp = MLPClassifier(hidden_layer_sizes=topology, max_iter=500, learning_rate='adaptive')
     else:
-        mlp = MLPClassifier(hidden_layer_sizes=topology, max_iter=1000, learning_rate_init=step)
+        mlp = MLPClassifier(hidden_layer_sizes=topology, max_iter=500, learning_rate_init=step)
 
+    # TODO(consider this)
     mlp.fit(entry_train, labels_train.values.ravel())
-
-    plot_training_error(mlp, entry_train, labels_train, 1000)
-
-    print("\nThe mlp is trained.")
-    input("Press Enter to continue...")
 
     return mlp
 
 
-def experiments_statistics():
-    hidden_layers_options = [(6, 6), (6, 12), (12, 6), 6]
+# TODO(to finish)
+def experiments_statistics(entry_data, labels):
+    hidden_layers_options = [(3, 3), (3, 6), (6, 3), 6, 3]
     learning_rate_options = [0.001, 0.5, 'adaptable']
-    split_options = [(0.5, False), (0.8, True)]
+    split_options = [(0.5, True), (0.2, False)]
 
     for hidden_layers in hidden_layers_options:
         for learning_rate in learning_rate_options:
             for split in split_options:
-                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1 - split[0],
-                                                                    random_state=42 if split[1] else None)
+                entry_train, entry_test, labels_train, labels_test = train_test_split(entry_data,
+                                                                                      labels, test_size=split[0],
+                                                                                      shuffle=False if split[1]
+                                                                                      else True)
                 scaler = StandardScaler()
-                X_train = scaler.fit_transform(X_train)
-                X_test = scaler.transform(X_test)
+                scaler.fit(entry_train)
 
-                mlp = train_mlp(X_train, y_train, hidden_layers, learning_rate)
-                accuracy, cm = evaluate_mlp(mlp, X_test, y_test)
+                entry_train = scaler.transform(entry_train)
+
+                mlp = train_mlp(entry_train, labels_train, hidden_layers, learning_rate)
+
                 print(f"Hidden Layers: {hidden_layers}, Learning Rate: {learning_rate}, Split: {split[0]}")
-                print(f"Accuracy: {accuracy:.3f}, Confusion Matrix:\n{cm}")
+
                 plot_training_error(mlp, X_train, y_train, 100)
 
 
@@ -160,7 +166,8 @@ def main():
     entry_test = pd.DataFrame()
     labels_test = pd.DataFrame()
     topology = tuple()
-    step = 0.0
+    step = 0
+    mlp = 0
 
     print("=======================================================================================")
     print("USER MENU: MLP CLASSIFICATION OF THE BANK NOTE IDENTIFICATION DATA SET (UCI REPOSITORY)")
@@ -176,7 +183,6 @@ def main():
             print("\nNot enough data to proceed! Please run \"1\" option to load the data first.")
             input("Press Enter to continue...")
 
-        # TODO(make limitations for option 4 (calling before 2 and 3), 5 should go after 4 )
         else:
             # Match case for menu implementation
             match option:
@@ -191,6 +197,11 @@ def main():
                 case '3':
                     step = training_step_choice()
                 case '4':
+                    if not topology or step == 0:
+                        print("\nNot enough data to proceed. Please execute option 2 and 3 first.")
+                        input("Press Enter to continue...")
+                        continue
+
                     entry_train, entry_test, labels_train, labels_test = train_test_split(entry_data, labels,
                                                                                           test_size=0.20)
                     scaler = StandardScaler()
@@ -200,8 +211,18 @@ def main():
                     entry_test = scaler.transform(entry_test)
 
                     mlp = train_mlp(entry_train, labels_train, topology, step)
+
+                    print("The error graph is building...")
+                    plot_training_error(mlp, entry_train, labels_train, 500)
+
+                    print("\nThe mlp is trained.")
+                    input("Press Enter to continue...")
                 case '5':
-                    mpl_prediction(mlp, entry_test, labels_test)
+                    if mlp == 0:
+                        print("\nThe mlp is not trained. Execute option 4 first.")
+                        input("Press Enter to continue...")
+                    else:
+                        mpl_prediction(mlp, entry_test, labels_test)
                 case '6':
                     print()
                 case '7':

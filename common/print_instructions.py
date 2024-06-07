@@ -73,6 +73,6 @@ Shows the progress graph.
 5. Uses the 20% of data to make prediction for classification. Shoes the results, including training report and 
 confusion matrix.
 6. Make a tests of the MLP with 3 different topologies, 3 different learning steps and 2 different training approaches
-to evaluate the best combination out of 18 of them. Saves all the error graphs created into a zip file.
+to evaluate the best combination out of 18 of them. Saves all the error graphs created into a plots folder.
 7. Exit the program
         """)
