@@ -117,6 +117,27 @@ def train_mlp(entry_train, labels_train, topology, step):
     return mlp
 
 
+def experiments_statistics():
+    hidden_layers_options = [(6, 6), (6, 12), (12, 6), 6]
+    learning_rate_options = [0.001, 0.5, 'adaptable']
+    split_options = [(0.5, False), (0.8, True)]
+
+    for hidden_layers in hidden_layers_options:
+        for learning_rate in learning_rate_options:
+            for split in split_options:
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1 - split[0],
+                                                                    random_state=42 if split[1] else None)
+                scaler = StandardScaler()
+                X_train = scaler.fit_transform(X_train)
+                X_test = scaler.transform(X_test)
+
+                mlp = train_mlp(X_train, y_train, hidden_layers, learning_rate)
+                accuracy, cm = evaluate_mlp(mlp, X_test, y_test)
+                print(f"Hidden Layers: {hidden_layers}, Learning Rate: {learning_rate}, Split: {split[0]}")
+                print(f"Accuracy: {accuracy:.3f}, Confusion Matrix:\n{cm}")
+                plot_training_error(mlp, X_train, y_train, 100)
+
+
 def mpl_prediction(mlp, values_test, labels_test) -> None:
     print("--------------------------------------------------------------------------------------------------")
     predictions = mlp.predict(values_test)
