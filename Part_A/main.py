@@ -188,7 +188,7 @@ def main():
         option = input("Enter your choice: ").replace(" ", "")
 
         # Checks if the user use option 1 first to read the data
-        if option != '1' and option != '6' and data.empty:
+        if option != '0' and option != '1' and option != '6' and data.empty:
             print("\nNot enough data to proceed! Please run \"1\" option to load the data first.")
             input("Press Enter to continue...")
         else:
